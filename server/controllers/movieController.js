@@ -86,7 +86,7 @@ const getSortedMovies = async (req, res) => {
 // @route   POST /api/movies
 // @access  Private/Admin
 const addMovie = async (req, res) => {
-  const { name, description, rating, releaseDate, duration } = req.body;
+  const { name, description, rating, releaseDate, duration, poster } = req.body;
 
   const movie = new Movie({
     name,
@@ -94,6 +94,7 @@ const addMovie = async (req, res) => {
     rating,
     releaseDate,
     duration,
+    poster,
   });
 
   const createdMovie = await movie.save();
@@ -104,7 +105,7 @@ const addMovie = async (req, res) => {
 // @route   PUT /api/movies/:id
 // @access  Private/Admin
 const updateMovie = async (req, res) => {
-  const { name, description, rating, releaseDate, duration } = req.body;
+  const { name, description, rating, releaseDate, duration, poster } = req.body;
 
   const movie = await Movie.findById(req.params.id);
 
@@ -114,6 +115,7 @@ const updateMovie = async (req, res) => {
     movie.rating = rating || movie.rating;
     movie.releaseDate = releaseDate || movie.releaseDate;
     movie.duration = duration || movie.duration;
+    movie.poster = poster || movie.poster;
 
     const updatedMovie = await movie.save();
     res.json(updatedMovie);

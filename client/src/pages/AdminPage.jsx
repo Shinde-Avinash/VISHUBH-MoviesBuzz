@@ -12,7 +12,8 @@ const AdminPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [open, setOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [currentMovie, setCurrentMovie] = useState({ name: '', description: '', rating: '', releaseDate: '', duration: '' });
+  const [currentMovie, setCurrentMovie] = useState({ name: '', description: '', rating: '', releaseDate: '', duration: '', poster: '' });
+  const [uploading, setUploading] = useState(false);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -36,7 +37,7 @@ const AdminPage = () => {
       setCurrentMovie({ ...movie, releaseDate: formattedDate });
     } else {
       setEditMode(false);
-      setCurrentMovie({ name: '', description: '', rating: '', releaseDate: '', duration: '' });
+      setCurrentMovie({ name: '', description: '', rating: '', releaseDate: '', duration: '', poster: '' });
     }
     setOpen(true);
   };
@@ -63,6 +64,27 @@ const AdminPage = () => {
     } catch (error) {
       console.error(error);
       alert('Error saving movie');
+    }
+  };
+
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('image', file);
+    setUploading(true);
+
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+      const { data } = await axios.post('/api/upload', formData, config);
+      setCurrentMovie({ ...currentMovie, poster: data.filePath });
+      setUploading(false);
+    } catch (error) {
+      console.error(error);
+      setUploading(false);
     }
   };
 
@@ -102,20 +124,24 @@ const AdminPage = () => {
                 <Table>
                 <TableHead>
                     <TableRow sx={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
-                    <TableCell sx={{ color: '#aaa', fontWeight: 'bold' }}>Name</TableCell>
-                    <TableCell sx={{ color: '#aaa', fontWeight: 'bold' }}>Rating</TableCell>
-                    <TableCell sx={{ color: '#aaa', fontWeight: 'bold' }}>Duration</TableCell>
-                    <TableCell align="right" sx={{ color: '#aaa', fontWeight: 'bold' }}>Actions</TableCell>
+                    <TableCell sx={{ color: '#aaa', fontWeight: 'bold', py: 1 }}>Poster</TableCell>
+                    <TableCell sx={{ color: '#aaa', fontWeight: 'bold', py: 1 }}>Name</TableCell>
+                    <TableCell sx={{ color: '#aaa', fontWeight: 'bold', py: 1 }}>Rating</TableCell>
+                    <TableCell sx={{ color: '#aaa', fontWeight: 'bold', py: 1 }}>Duration</TableCell>
+                    <TableCell align="right" sx={{ color: '#aaa', fontWeight: 'bold', py: 1 }}>Actions</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {movies.map((movie) => (
                     <TableRow key={movie._id} hover sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                        <TableCell sx={{ color: 'white', fontWeight: 500 }}>{movie.name}</TableCell>
-                        <TableCell>
-                            <Chip label={movie.rating} size="small" sx={{ bgcolor: '#ffb400', color: 'black', fontWeight: 'bold' }} />
+                        <TableCell sx={{ py: 1 }}>
+                            <Box component="img" src={movie.poster} alt={movie.name} sx={{ width: 40, height: 60, objectFit: 'cover', borderRadius: 1 }} />
                         </TableCell>
-                        <TableCell sx={{ color: '#ddd' }}>{movie.duration}m</TableCell>
+                        <TableCell sx={{ color: 'white', fontWeight: 500, py: 1 }}>{movie.name}</TableCell>
+                        <TableCell sx={{ py: 1 }}>
+                            <Chip label={movie.rating} size="small" sx={{ bgcolor: '#ffb400', color: 'black', fontWeight: 'bold', height: 24 }} />
+                        </TableCell>
+                        <TableCell sx={{ color: '#ddd', py: 1 }}>{movie.duration}m</TableCell>
                         <TableCell align="right">
                         <IconButton onClick={() => handleOpen(movie)} sx={{ color: '#4fc3f7' }}>
                             <EditIcon />
@@ -167,6 +193,34 @@ const AdminPage = () => {
                     onChange={(e) => setCurrentMovie({ ...currentMovie, description: e.target.value })}
                     sx={{ textarea: { color: 'white' }, label: { color: '#aaa' }, '.MuiFilledInput-root': { bgcolor: 'rgba(255,255,255,0.05)' } }}
                 />
+                
+                <Box sx={{ mt: 2, mb: 1 }}>
+                    <Typography variant="body2" color="#aaa" gutterBottom>Poster Image</Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <TextField
+                            variant="filled"
+                            size="small"
+                            fullWidth
+                            value={currentMovie.poster}
+                            onChange={(e) => setCurrentMovie({ ...currentMovie, poster: e.target.value })}
+                            label="Image URL"
+                             sx={{ input: { color: 'white' }, label: { color: '#aaa' }, '.MuiFilledInput-root': { bgcolor: 'rgba(255,255,255,0.05)' } }}
+                        />
+                         <Button
+                            variant="contained"
+                            component="label"
+                            sx={{ bgcolor: '#333', '&:hover': { bgcolor: '#444' } }}
+                        >
+                            Upload
+                            <input
+                                type="file"
+                                hidden
+                                onChange={uploadFileHandler}
+                            />
+                        </Button>
+                    </Box>
+                    {uploading && <Typography variant="caption" color="primary">Uploading...</Typography>}
+                </Box>
                 <TextField
                     margin="dense"
                     label="Rating (0-10)"
@@ -199,7 +253,7 @@ const AdminPage = () => {
                      sx={{ input: { color: 'white' }, label: { color: '#aaa' }, '.MuiFilledInput-root': { bgcolor: 'rgba(255,255,255,0.05)' } }}
                 />
                 </DialogContent>
-                <DialogActions sx={{ p: 3 }}>
+                <DialogActions sx={{ p: 2 }}>
                 <Button onClick={handleClose} sx={{ color: '#aaa' }}>Cancel</Button>
                 <Button onClick={handleSubmit} variant="contained" sx={{ bgcolor: '#e50914' }}>Save</Button>
                 </DialogActions>
