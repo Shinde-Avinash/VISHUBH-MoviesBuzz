@@ -2,8 +2,9 @@
 
 ## 🌟 Project Overview
 
-<img width="1349" height="598" alt="image" src="https://github.com/user-attachments/assets/b1123f93-2bda-445b-959e-782dca3ce3e3" />
-<img width="1351" height="592" alt="image" src="https://github.com/user-attachments/assets/803ba1b9-d752-42ac-8687-24d23e14e458" />
+<img width="1893" height="822" alt="image" src="https://github.com/user-attachments/assets/04bfefc0-cefb-46a6-87b3-fabce898facc" />
+<img width="1896" height="801" alt="image" src="https://github.com/user-attachments/assets/422ef3c4-942e-417e-a479-b599036bff4f" />
+
 
 
 **VISHUBH MoviesBuzz** is a modern **full-stack movie web application** that allows users to **browse, search, and sort movies** seamlessly.  
