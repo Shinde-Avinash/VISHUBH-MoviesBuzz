@@ -25,6 +25,11 @@ const MovieCard = ({ movie }) => {
         image={movie.poster || 'https://placehold.co/150x225?text=No+Img'}
         alt={movie.name}
         sx={{ objectFit: 'cover' }}
+        referrerPolicy="no-referrer"
+        onError={(e) => {
+            e.target.onerror = null; 
+            e.target.src = 'https://placehold.co/300x450?text=Image+Not+Found'
+        }}
       />
       <CardContent sx={{ flexGrow: 1, p: 1.5, pb: '8px !important' }}>
         <Typography variant="subtitle1" component="div" sx={{ lineHeight: 1.2, mb: 1, fontWeight: 'bold' }}>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Box, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Container, Chip } from '@mui/material';
+import { Box, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Container, Chip, Pagination } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
@@ -8,6 +8,8 @@ import { useAuth } from '../context/AuthContext';
 
 const AdminPage = () => {
   const [movies, setMovies] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [open, setOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [currentMovie, setCurrentMovie] = useState({ name: '', description: '', rating: '', releaseDate: '', duration: '' });
@@ -15,12 +17,13 @@ const AdminPage = () => {
 
   useEffect(() => {
     fetchMovies();
-  }, []);
+  }, [page]);
 
   const fetchMovies = async () => {
     try {
-        const { data } = await axios.get('/api/movies/sorted');
-        setMovies(data);
+        const { data } = await axios.get(`/api/movies/sorted?pageNumber=${page}`);
+        setMovies(data.movies);
+        setTotalPages(data.pages);
     } catch (error) {
         console.error("Failed to fetch movies", error);
     }
@@ -126,6 +129,19 @@ const AdminPage = () => {
                 </TableBody>
                 </Table>
             </TableContainer>
+
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                <Pagination 
+                    count={totalPages} 
+                    page={page} 
+                    onChange={(e, value) => setPage(value)} 
+                    color="primary" 
+                    sx={{ 
+                        '& .MuiPaginationItem-root': { color: 'white' },
+                        '& .Mui-selected': { bgcolor: '#e50914 !important', color: 'white' }
+                    }}
+                />
+            </Box>
 
             <Dialog open={open} onClose={handleClose} PaperProps={{ sx: { bgcolor: '#1e1e1e', color: 'white', minWidth: 400 } }}>
                 <DialogTitle>{editMode ? 'Edit Movie' : 'Add Movie'}</DialogTitle>

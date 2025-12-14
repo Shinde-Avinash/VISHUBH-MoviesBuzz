@@ -61,7 +61,9 @@ const searchMovies = async (req, res) => {
 // @route   GET /api/movies/sorted
 // @access  Public
 const getSortedMovies = async (req, res) => {
-  const { sortBy, order } = req.query; // sortBy=rating, order=desc
+  const { sortBy, order, pageNumber } = req.query; // sortBy=rating, order=desc
+  const pageSize = 10;
+  const page = Number(pageNumber) || 1;
   
   const sortOptions = {};
   if (sortBy) {
@@ -70,8 +72,14 @@ const getSortedMovies = async (req, res) => {
     sortOptions['createdAt'] = -1; 
   }
 
-  const movies = await Movie.find({}).sort(sortOptions);
-  res.json(movies);
+  const count = await Movie.countDocuments({});
+
+  const movies = await Movie.find({})
+    .sort(sortOptions)
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+
+  res.json({ movies, page, pages: Math.ceil(count / pageSize) });
 };
 
 // @desc    Create a movie

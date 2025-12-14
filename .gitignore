@@ -4,4 +4,4 @@ dist/
 build/
 .DS_Store
 .vscode/
-Mern Assignment.pdf
+*.pdf
