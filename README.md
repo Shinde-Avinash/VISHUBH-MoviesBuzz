@@ -1,34 +1,91 @@
-# MERN Movie Application
+# 🎬 VISHUBH MoviesBuzz
 
-## Project Overview
-A full-stack movie web application allowing users to browse, search, and sort movies. Administrators can manage movie records.
+## 🌟 Project Overview
 
-## Tech Stack
-- **Frontend**: React, Vite, Material-UI
-- **Backend**: Node.js, Express, MongoDB
-- **Auth**: JWT, BCrypt
+<img width="1349" height="598" alt="image" src="https://github.com/user-attachments/assets/b1123f93-2bda-445b-959e-782dca3ce3e3" />
+<img width="1345" height="596" alt="image" src="https://github.com/user-attachments/assets/361ef22c-37cb-4414-a6a1-e9d20408f36d" />
 
-## Setup Instructions
+**VISHUBH MoviesBuzz** is a modern **full-stack movie web application** that allows users to **browse, search, and sort movies** seamlessly.  
+It also provides an **Admin Dashboard** to manage movie records efficiently.
 
-### 1. Backend
+This project demonstrates real-world **MERN-style architecture**, **authentication**, **role-based access**, and **clean UI design**.
+
+---
+
+## 🚀 Key Features
+
+- 🎥 Browse popular and latest movies  
+- 🔍 Search movies by title  
+- 🔃 Sort movies by rating, release year, etc.  
+- 👤 User Authentication (Login / Register)  
+- 🛡️ Role-based Access (Admin / User)  
+- 🧑‍💼 Admin Dashboard for movie management  
+- ⚡ Fast & responsive UI  
+
+---
+
+## 🧰 Tech Stack
+
+### 🎨 Frontend
+- ⚛️ React  
+- ⚡ Vite  
+- 🎨 Material-UI (MUI)  
+
+### 🛠️ Backend
+- 🟢 Node.js  
+- 🚂 Express.js  
+- 🍃 MongoDB  
+
+### 🔐 Authentication & Security
+- 🔑 JWT (JSON Web Tokens)  
+- 🔒 BCrypt (Password Hashing)  
+
+---
+
+## ⚙️ Setup Instructions
+
+### 📦 1. Backend Setup
 ```bash
 cd server
 npm install
-node seeder.js  # Seeds the database with Admin/User
+node seeder.js   # Seeds the database with Admin & User accounts
 npm run dev
 ```
-Server runs on `http://localhost:5000`.
 
-### 2. Frontend
-```bash
+
+🟢 Server will run on:
+👉 http://localhost:5000
+
+💻 2. Frontend Setup
 cd client
 npm install
 npm run dev
-```
-Frontend runs on `http://localhost:5173`.
 
-### 3. Usage
-- Visit the frontend URL.
-- Login with `admin@example.com` / `password123` to access Admin Dashboard.
-- Login with `user@example.com` / `password123` or Register a new account.
-- Movies will be automatically populated on first access to the Home page.
+
+### 🎨 Frontend will run on:
+👉 http://localhost:5173
+
+### 🔑 Demo Login Credentials
+### 🧑‍💼 Admin Access
+Email: admin@example.com
+Password: password123
+
+### 👤 User Access
+Email: user@example.com
+Password: password123
+
+
+### ➡️ Users can also register a new account.
+🎯 Usage Guide
+🌐 Visit the frontend URL
+🔐 Login as Admin to access the Admin Dashboard
+🎬 Login/Register as User to browse movies
+📥 Movies are auto-seeded on first Home page load
+
+### 📌 Notes
+🔄 Movie data is populated automatically using a seeder
+🧪 Ideal project for demonstrating Full-Stack Development
+💼 Suitable for portfolio & interviews
+
+### ✨ Author
+Developed with ❤️ by Avinash
