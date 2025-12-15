@@ -14,7 +14,7 @@ const HomePage = () => {
     setLoading(true);
     try {
       if (sortBy) {
-        const { data } = await axios.get(`/api/movies/sorted?sortBy=${sortBy}&order=desc`);
+        const { data } = await axios.get(`https://vishubh-moviesbuzz-production.up.railway.app/api/movies/sorted?sortBy=${sortBy}&order=desc`);
         setMovies(data);
         setPages(1); 
       } else {
