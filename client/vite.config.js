@@ -7,11 +7,13 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://vishubh-moviesbuzz-production.up.railway.app',
+        target: 'https://discover-movies-production.up.railway.app',
         changeOrigin: true,
+        rewrite: (path) => path, // keep path as-is
+        logLevel: 'debug',
       },
       '/uploads': {
-        target: 'https://vishubh-moviesbuzz-production.up.railway.app',
+        target: 'https://discover-movies-production.up.railway.app',
         changeOrigin: true,
       },
     },
