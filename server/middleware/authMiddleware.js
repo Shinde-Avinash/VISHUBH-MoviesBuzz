@@ -28,6 +28,7 @@ const admin = (req, res, next) => {
   if (req.user && req.user.role === 'admin') {
     next();
   } else {
+    console.log(`Admin auth failed. User: ${req.user ? req.user.email : 'No user'}, Role: ${req.user ? req.user.role : 'N/A'}`);
     res.status(401).json({ message: 'Not authorized as an admin' });
   }
 };

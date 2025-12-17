@@ -24,6 +24,10 @@ app.get('/', (req, res) => {
   res.send('API is running...');
 });
 
+app.get('/api', (req, res) => {
+  res.send('API is running...');
+});
+
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/movies', require('./routes/movieRoutes'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
