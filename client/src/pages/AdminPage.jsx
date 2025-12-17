@@ -85,6 +85,7 @@ const AdminPage = () => {
       setUploading(false);
     } catch (error) {
       console.error(error);
+      alert(error.response?.data?.message || 'Error uploading image');
       setUploading(false);
     }
   };

@@ -3,6 +3,11 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const connectDB = require('./config/db');
+const fs = require('fs');
+
+if (!fs.existsSync('./uploads')) {
+    fs.mkdirSync('./uploads');
+}
 
 dotenv.config();
 connectDB();
