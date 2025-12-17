@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent, Typography, CardMedia, Box, Chip } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
+import { getImgUrl } from '../utils/imageUtils';
 
 const MovieCard = ({ movie }) => {
   return (
@@ -22,7 +23,7 @@ const MovieCard = ({ movie }) => {
       <CardMedia
         component="img"
         height="180" 
-        image={movie.poster ? (movie.poster.startsWith('http') ? movie.poster : `${import.meta.env.VITE_API_URL.replace('/api', '')}${movie.poster}`) : 'https://placehold.co/150x225?text=No+Img'}
+        image={getImgUrl(movie.poster)}
         alt={movie.name}
         sx={{ objectFit: 'cover' }}
         referrerPolicy="no-referrer"

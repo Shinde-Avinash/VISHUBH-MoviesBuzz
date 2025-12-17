@@ -5,6 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useAuth } from '../context/AuthContext';
+import { getImgUrl } from '../utils/imageUtils';
 
 const AdminPage = () => {
   const [movies, setMovies] = useState([]);
@@ -136,7 +137,7 @@ const AdminPage = () => {
                         movies.map((movie) => (
                         <TableRow key={movie._id} hover sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                             <TableCell sx={{ py: 1 }}>
-                                <Box component="img" src={movie.poster} alt={movie.name} sx={{ width: 40, height: 60, objectFit: 'cover', borderRadius: 1 }} />
+                            <Box component="img" src={getImgUrl(movie.poster)} alt={movie.name} sx={{ width: 40, height: 60, objectFit: 'cover', borderRadius: 1 }} />
                             </TableCell>
                             <TableCell sx={{ color: 'white', fontWeight: 500, py: 1 }}>{movie.name}</TableCell>
                             <TableCell sx={{ py: 1 }}>
@@ -228,6 +229,11 @@ const AdminPage = () => {
                         </Button>
                     </Box>
                     {uploading && <Typography variant="caption" color="primary">Uploading...</Typography>}
+                    {currentMovie.poster && (
+                        <Box sx={{ mt: 1 }}>
+                            <Box component="img" src={getImgUrl(currentMovie.poster)} alt="Preview" sx={{ width: 60, height: 90, objectFit: 'cover', borderRadius: 1, border: '1px solid #333' }} />
+                        </Box>
+                    )}
                 </Box>
                 <TextField
                     margin="dense"
