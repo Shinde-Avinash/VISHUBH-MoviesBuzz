@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api/axiosConfig';
 import { Grid, Pagination, Box, Typography, Select, MenuItem, FormControl, InputLabel, CircularProgress, Container, Paper } from '@mui/material';
 import MovieCard from '../components/MovieCard';
 
@@ -14,11 +14,11 @@ const HomePage = () => {
     setLoading(true);
     try {
       if (sortBy) {
-        const { data } = await axios.get(`/api/movies/sorted?sortBy=${sortBy}&order=desc`);
+        const { data } = await api.get(`/movies/sorted?sortBy=${sortBy}&order=desc`);
         setMovies(data);
         setPages(1); 
       } else {
-        const { data } = await axios.get(`/api/movies?pageNumber=${pageNumber}`);
+        const { data } = await api.get(`/movies?pageNumber=${pageNumber}`);
         setMovies(data.movies);
         setPage(data.page);
         setPages(data.pages);

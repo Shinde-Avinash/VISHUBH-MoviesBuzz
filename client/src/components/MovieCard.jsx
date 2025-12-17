@@ -22,7 +22,7 @@ const MovieCard = ({ movie }) => {
       <CardMedia
         component="img"
         height="180" 
-        image={movie.poster || 'https://placehold.co/150x225?text=No+Img'}
+        image={movie.poster ? (movie.poster.startsWith('http') ? movie.poster : `${import.meta.env.VITE_API_URL.replace('/api', '')}${movie.poster}`) : 'https://placehold.co/150x225?text=No+Img'}
         alt={movie.name}
         sx={{ objectFit: 'cover' }}
         referrerPolicy="no-referrer"

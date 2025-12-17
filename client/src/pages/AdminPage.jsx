@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api/axiosConfig';
 import { Box, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Container, Chip, Pagination } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -22,7 +22,7 @@ const AdminPage = () => {
 
   const fetchMovies = async () => {
     try {
-        const { data } = await axios.get(`/api/movies/sorted?pageNumber=${page}`);
+        const { data } = await api.get(`/movies/sorted?pageNumber=${page}`);
         setMovies(data.movies);
         setTotalPages(data.pages);
     } catch (error) {
@@ -55,9 +55,9 @@ const AdminPage = () => {
       };
 
       if (editMode) {
-        await axios.put(`/api/movies/${currentMovie._id}`, currentMovie, config);
+        await api.put(`/movies/${currentMovie._id}`, currentMovie, config);
       } else {
-        await axios.post('/api/movies', currentMovie, config);
+        await api.post('/movies', currentMovie, config);
       }
       setOpen(false);
       fetchMovies();
@@ -79,7 +79,7 @@ const AdminPage = () => {
           'Content-Type': 'multipart/form-data',
         },
       };
-      const { data } = await axios.post('/api/upload', formData, config);
+      const { data } = await api.post('/upload', formData, config);
       setCurrentMovie({ ...currentMovie, poster: data.filePath });
       setUploading(false);
     } catch (error) {
@@ -96,7 +96,7 @@ const AdminPage = () => {
             Authorization: `Bearer ${user.token}`,
           },
         };
-        await axios.delete(`/api/movies/${id}`, config);
+        await api.delete(`/movies/${id}`, config);
         fetchMovies();
       } catch (error) {
         console.error(error);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api/axiosConfig';
 import { Box, TextField, Button, Grid, Typography, Container, CircularProgress, InputAdornment, IconButton } from '@mui/material';
 import MovieCard from '../components/MovieCard';
 import SearchIcon from '@mui/icons-material/Search';
@@ -17,7 +17,7 @@ const SearchPage = () => {
 
     setLoading(true);
     try {
-      const { data } = await axios.get(`/api/movies/search?q=${query}`);
+      const { data } = await api.get(`/movies/search?q=${query}`);
       setMovies(data);
       setSearched(true);
     } catch (error) {
