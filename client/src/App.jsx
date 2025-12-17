@@ -8,7 +8,9 @@ import ProfilePage from './pages/ProfilePage';
 import AdminPage from './pages/AdminPage';
 import SearchPage from './pages/SearchPage';
 import { useAuth } from './context/AuthContext';
-import { Container, Box } from '@mui/material';
+import { Container, Box, Snackbar, Alert } from '@mui/material';
+import { useState, useEffect } from 'react';
+import api from './api/axiosConfig';
 
 const PrivateRoute = ({ children, adminOnly = false }) => {
   const { user, loading } = useAuth();
@@ -27,6 +29,31 @@ const PrivateRoute = ({ children, adminOnly = false }) => {
 };
 
 function App() {
+  const [connectionStatus, setConnectionStatus] = useState(null); // 'success' | 'error' | null
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  useEffect(() => {
+    const checkConnection = async () => {
+      try {
+        await api.get('/');
+        setConnectionStatus('success');
+      } catch (error) {
+        setConnectionStatus('error');
+      } finally {
+        setOpenSnackbar(true);
+      }
+    };
+
+    checkConnection();
+  }, []);
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
+
   return (
     <>
       <Header />
@@ -53,6 +80,11 @@ function App() {
           </Routes>
         </Container>
       </Box>
+      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity={connectionStatus === 'success' ? 'success' : 'error'} sx={{ width: '100%' }}>
+          {connectionStatus === 'success' ? 'Backend Connected Successfully!' : 'Failed to connect to Backend.'}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

@@ -15,11 +15,11 @@ const HomePage = () => {
     try {
       if (sortBy) {
         const { data } = await api.get(`/movies/sorted?sortBy=${sortBy}&order=desc`);
-        setMovies(data);
+        setMovies(data || []);
         setPages(1); 
       } else {
         const { data } = await api.get(`/movies?pageNumber=${pageNumber}`);
-        setMovies(data.movies);
+        setMovies(data.movies || []);
         setPage(data.page);
         setPages(data.pages);
       }
@@ -92,11 +92,19 @@ const HomePage = () => {
         ) : (
             <>
                 <Grid container spacing={3}>
-                    {movies.map((movie) => (
+                    {movies && movies.length > 0 ? (
+                    movies.map((movie) => (
                     <Grid item key={movie._id} xs={6} sm={4} md={2}>
                         <MovieCard movie={movie} />
                     </Grid>
-                    ))}
+                    ))
+                    ) : (
+                        <Grid item xs={12}>
+                             <Typography variant="h6" sx={{ color: 'white', textAlign: 'center', width: '100%', mt: 4 }}>
+                                {loading ? "Loading..." : "No movies found."}
+                            </Typography>
+                        </Grid>
+                    )}
                 </Grid>
                 
                 {!sortBy && (

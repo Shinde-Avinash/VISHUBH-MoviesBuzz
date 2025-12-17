@@ -18,7 +18,7 @@ const SearchPage = () => {
     setLoading(true);
     try {
       const { data } = await api.get(`/movies/search?q=${query}`);
-      setMovies(data);
+      setMovies(data || []);
       setSearched(true);
     } catch (error) {
       console.error(error);
@@ -117,7 +117,7 @@ const SearchPage = () => {
             )}
 
             <Grid container spacing={3}>
-                {movies.map((movie) => (
+                {movies && movies.length > 0 && movies.map((movie) => (
                 <Grid item key={movie._id} xs={6} sm={4} md={2}>
                     <MovieCard movie={movie} />
                 </Grid>

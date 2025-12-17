@@ -23,7 +23,7 @@ const AdminPage = () => {
   const fetchMovies = async () => {
     try {
         const { data } = await api.get(`/movies/sorted?pageNumber=${page}`);
-        setMovies(data.movies);
+        setMovies(data.movies || []);
         setTotalPages(data.pages);
     } catch (error) {
         console.error("Failed to fetch movies", error);
@@ -132,26 +132,34 @@ const AdminPage = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {movies.map((movie) => (
-                    <TableRow key={movie._id} hover sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                        <TableCell sx={{ py: 1 }}>
-                            <Box component="img" src={movie.poster} alt={movie.name} sx={{ width: 40, height: 60, objectFit: 'cover', borderRadius: 1 }} />
-                        </TableCell>
-                        <TableCell sx={{ color: 'white', fontWeight: 500, py: 1 }}>{movie.name}</TableCell>
-                        <TableCell sx={{ py: 1 }}>
-                            <Chip label={movie.rating} size="small" sx={{ bgcolor: '#ffb400', color: 'black', fontWeight: 'bold', height: 24 }} />
-                        </TableCell>
-                        <TableCell sx={{ color: '#ddd', py: 1 }}>{movie.duration}m</TableCell>
-                        <TableCell align="right">
-                        <IconButton onClick={() => handleOpen(movie)} sx={{ color: '#4fc3f7' }}>
-                            <EditIcon />
-                        </IconButton>
-                        <IconButton onClick={() => handleDelete(movie._id)} sx={{ color: '#ef5350' }}>
-                            <DeleteIcon />
-                        </IconButton>
-                        </TableCell>
-                    </TableRow>
-                    ))}
+                    {movies && movies.length > 0 ? (
+                        movies.map((movie) => (
+                        <TableRow key={movie._id} hover sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                            <TableCell sx={{ py: 1 }}>
+                                <Box component="img" src={movie.poster} alt={movie.name} sx={{ width: 40, height: 60, objectFit: 'cover', borderRadius: 1 }} />
+                            </TableCell>
+                            <TableCell sx={{ color: 'white', fontWeight: 500, py: 1 }}>{movie.name}</TableCell>
+                            <TableCell sx={{ py: 1 }}>
+                                <Chip label={movie.rating} size="small" sx={{ bgcolor: '#ffb400', color: 'black', fontWeight: 'bold', height: 24 }} />
+                            </TableCell>
+                            <TableCell sx={{ color: '#ddd', py: 1 }}>{movie.duration}m</TableCell>
+                            <TableCell align="right">
+                            <IconButton onClick={() => handleOpen(movie)} sx={{ color: '#4fc3f7' }}>
+                                <EditIcon />
+                            </IconButton>
+                            <IconButton onClick={() => handleDelete(movie._id)} sx={{ color: '#ef5350' }}>
+                                <DeleteIcon />
+                            </IconButton>
+                            </TableCell>
+                        </TableRow>
+                        ))
+                    ) : (
+                        <TableRow>
+                            <TableCell colSpan={5} align="center" sx={{ color: '#aaa', py: 3 }}>
+                                No movies found.
+                            </TableCell>
+                        </TableRow>
+                    )}
                 </TableBody>
                 </Table>
             </TableContainer>
