@@ -64,7 +64,7 @@ const AdminPage = () => {
       fetchMovies();
     } catch (error) {
       console.error(error);
-      alert('Error saving movie');
+      alert(error.response?.data?.message || 'Error saving movie');
     }
   };
 

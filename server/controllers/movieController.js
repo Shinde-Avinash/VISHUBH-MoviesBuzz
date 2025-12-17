@@ -86,41 +86,53 @@ const getSortedMovies = async (req, res) => {
 // @route   POST /api/movies
 // @access  Private/Admin
 const addMovie = async (req, res) => {
-  const { name, description, rating, releaseDate, duration, poster } = req.body;
+  try {
+    const { name, description, rating, releaseDate, duration, poster } = req.body;
 
-  const movie = new Movie({
-    name,
-    description,
-    rating,
-    releaseDate,
-    duration,
-    poster,
-  });
+    if (!name || !description || !rating || !releaseDate || !duration) {
+        return res.status(400).json({ message: 'Please fill in all required fields' });
+    }
 
-  const createdMovie = await movie.save();
-  res.status(201).json(createdMovie);
+    const movie = new Movie({
+        name,
+        description,
+        rating,
+        releaseDate,
+        duration,
+        poster,
+    });
+
+    const createdMovie = await movie.save();
+    res.status(201).json(createdMovie);
+  } catch (error) {
+    res.status(500).json({ message: error.message || 'Server Error' });
+  }
 };
 
 // @desc    Update a movie
 // @route   PUT /api/movies/:id
 // @access  Private/Admin
 const updateMovie = async (req, res) => {
-  const { name, description, rating, releaseDate, duration, poster } = req.body;
+  try {
+    const { name, description, rating, releaseDate, duration, poster } = req.body;
 
-  const movie = await Movie.findById(req.params.id);
+    const movie = await Movie.findById(req.params.id);
 
-  if (movie) {
-    movie.name = name || movie.name;
-    movie.description = description || movie.description;
-    movie.rating = rating || movie.rating;
-    movie.releaseDate = releaseDate || movie.releaseDate;
-    movie.duration = duration || movie.duration;
-    movie.poster = poster || movie.poster;
+    if (movie) {
+        movie.name = name || movie.name;
+        movie.description = description || movie.description;
+        movie.rating = rating || movie.rating;
+        movie.releaseDate = releaseDate || movie.releaseDate;
+        movie.duration = duration || movie.duration;
+        movie.poster = poster || movie.poster;
 
-    const updatedMovie = await movie.save();
-    res.json(updatedMovie);
-  } else {
-    res.status(404).json({ message: 'Movie not found' });
+        const updatedMovie = await movie.save();
+        res.json(updatedMovie);
+    } else {
+        res.status(404).json({ message: 'Movie not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message || 'Server Error' });
   }
 };
 
@@ -128,13 +140,17 @@ const updateMovie = async (req, res) => {
 // @route   DELETE /api/movies/:id
 // @access  Private/Admin
 const deleteMovie = async (req, res) => {
-  const movie = await Movie.findById(req.params.id);
+  try {
+    const movie = await Movie.findById(req.params.id);
 
-  if (movie) {
-    await movie.deleteOne();
-    res.json({ message: 'Movie removed' });
-  } else {
-    res.status(404).json({ message: 'Movie not found' });
+    if (movie) {
+        await movie.deleteOne();
+        res.json({ message: 'Movie removed' });
+    } else {
+        res.status(404).json({ message: 'Movie not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message || 'Server Error' });
   }
 };
 
